@@ -90,7 +90,13 @@ class Plot(SimpleExtension):
         self.p = []
         self.p_indices = {}
         for i, channel_set in enumerate(channels):
-            self.p.append(figure(title='{} #{}'.format(document, i + 1)))
+            channel_set_opts = {}
+            if isinstance(channel_set, dict):
+                channel_set_opts = channel_set
+                channel_set = channel_set_opts.pop('channels')
+            channel_set_opts.setdefault('title',
+                                        '{} #{}'.format(document, i + 1))
+            self.p.append(figure(**channel_set_opts))
             for channel in channel_set:
                 self.p_indices[channel] = i
         if open_browser:
